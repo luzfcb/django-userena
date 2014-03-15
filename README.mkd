@@ -1,3 +1,6 @@
+[![Requirements Status](https://requires.io/github/luzfcb/django-userena/requirements.png?branch=master)](https://requires.io/github/luzfcb/django-userena/requirements/?branch=master)
+[![Build Status](https://travis-ci.org/luzfcb/django-userena.png?branch=master)](https://travis-ci.org/luzfcb/django-userena)
+
 # Django Userena
 
 Userena is a Django application that supplies your Django project with full
