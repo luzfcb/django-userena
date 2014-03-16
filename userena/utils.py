@@ -10,6 +10,7 @@ except ImportError:
 from userena import settings as userena_settings
 
 import urllib, random, datetime
+import six
 
 try:
     from django.utils.text import truncate_words
@@ -20,7 +21,7 @@ except ImportError:
     def truncate_words(s, num, end_text='...'):
         truncate = end_text and ' %s' % end_text or ''
         return Truncator(s).words(num, truncate=truncate)
-    truncate_words = allow_lazy(truncate_words, unicode)
+    truncate_words = allow_lazy(truncate_words, six.u)
 
 def get_gravatar(email, size=80, default='identicon'):
     """ Get's a Gravatar for a email address.
@@ -106,9 +107,9 @@ def generate_sha1(string, salt=None):
     :return: Tuple containing the salt and hash.
 
     """
-    if not isinstance(string, (str, unicode)):
+    if not isinstance(string, (str, six.u)):
         string = str(string)
-    if isinstance(string, unicode):
+    if isinstance(string, six.u):
         string = string.encode("utf-8")
     if not salt:
         salt = sha_constructor(str(random.random())).hexdigest()[:5]

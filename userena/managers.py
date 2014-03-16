@@ -13,6 +13,7 @@ from userena import signals as userena_signals
 
 from guardian.shortcuts import assign_perm, get_perms
 
+import six
 
 import re, datetime
 
@@ -97,7 +98,7 @@ class UserenaManager(UserManager):
         :return: The newly created :class:`UserenaSignup` instance.
 
         """
-        if isinstance(user.username, unicode):
+        if isinstance(user.username, six.u):
             user.username = user.username.encode('utf-8')
         salt, activation_key = generate_sha1(user.username)
 
