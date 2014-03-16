@@ -26,6 +26,7 @@ setup(name='django-userena',
         'easy_thumbnails',
         'django-guardian>=1.1.0.beta',
         'html2text',
+        'six',
         ### Required to build documentation
         # 'sphinx',
         # 'south',
