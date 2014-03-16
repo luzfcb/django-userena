@@ -124,7 +124,7 @@ def generate_sha1(string, salt=None):
         encoded_str = str(random.random()).encode('utf-8')
         salt = sha_constructor(encoded_str).hexdigest()[:5]
     # http://stackoverflow.com/questions/13265439/python-3-3-unicode-objects-must-be-encoded-before-hashing
-    result_salt_string = salt + string.encode('utf-8')
+    result_salt_string = salt + str(string).encode('utf-8')
     hash = sha_constructor(result_salt_string).hexdigest()
 
     return (salt, hash)

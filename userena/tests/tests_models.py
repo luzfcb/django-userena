@@ -215,7 +215,12 @@ class BaseProfileModelTest(TestCase):
         template = '//www.gravatar.com/avatar/%(hash)s?s=%(size)s&d=%(default)s'
         profile = Profile.objects.get(pk=1)
         # http://stackoverflow.com/questions/13265439/python-3-3-unicode-objects-must-be-encoded-before-hashing
-        encoded_str = profile.user.email.encode('utf-8')
+        if six.PY3:
+            encoded_str = str(profile.user.email).encode('utf-8')
+        if six.PY2:
+            encoded_str = unicode(profile.user.email).encode('utf-8')
+        print('Original email', profile.user.email)
+        print('Encoded email', encoded_str)
         gravatar_hash = hashlib.md5(encoded_str).hexdigest()
 
         # Test with the default settings
