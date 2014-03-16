@@ -58,13 +58,19 @@ def get_gravatar(email, size=80, default='identicon'):
     :return: The URI pointing to the Gravatar.
 
     """
+    encoded_email = None
+    if six.PY3:
+        encoded_email = email.lower().encode("utf-8")
+    if six.PY2:
+        encoded_email = email.lower()
+
     if userena_settings.USERENA_MUGSHOT_GRAVATAR_SECURE:
         base_url = 'https://secure.gravatar.com/avatar/'
     else: base_url = '//www.gravatar.com/avatar/'
 
     gravatar_url = '%(base_url)s%(gravatar_id)s?' % \
             {'base_url': base_url,
-             'gravatar_id': md5_constructor(email.lower()).hexdigest()}
+             'gravatar_id': md5_constructor(encoded_email).hexdigest()}
 
     gravatar_url += urllib.urlencode({'s': str(size),
                                       'd': default})
@@ -124,7 +130,9 @@ def generate_sha1(string, salt=None):
         encoded_str = str(random.random()).encode('utf-8')
         salt = sha_constructor(encoded_str).hexdigest()[:5]
     # http://stackoverflow.com/questions/13265439/python-3-3-unicode-objects-must-be-encoded-before-hashing
-    result_salt_string = salt + str(string).encode('utf-8')
+    # fix TypeError: Unicode-objects must be encoded before hashing error
+    # fix TypeError: Can't convert 'bytes' object to str implicitly error
+    result_salt_string = salt + str(string.decode('utf-8'))
     hash = sha_constructor(result_salt_string).hexdigest()
 
     return (salt, hash)
