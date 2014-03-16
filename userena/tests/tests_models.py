@@ -214,8 +214,9 @@ class BaseProfileModelTest(TestCase):
         """
         template = '//www.gravatar.com/avatar/%(hash)s?s=%(size)s&d=%(default)s'
         profile = Profile.objects.get(pk=1)
-
-        gravatar_hash = hashlib.md5(profile.user.email).hexdigest()
+        # http://stackoverflow.com/questions/13265439/python-3-3-unicode-objects-must-be-encoded-before-hashing
+        encoded_str = profile.user.email.encode('utf-8')
+        gravatar_hash = hashlib.md5(encoded_str).hexdigest()
 
         # Test with the default settings
         self.failUnlessEqual(profile.get_mugshot_url(),
