@@ -1,4 +1,8 @@
-from django.conf.urls import *
+try:
+    from django.conf.urls import patterns, url
+except:
+    from django.conf.urls.defaults import patterns, url
+
 from userena.contrib.umessages import views as messages_views
 from django.contrib.auth.decorators import login_required
 

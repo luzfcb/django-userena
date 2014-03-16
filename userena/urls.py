@@ -1,4 +1,8 @@
-from django.conf.urls import *
+try:
+    from django.conf.urls import patterns, url
+except:
+    from django.conf.urls.defaults import patterns, url
+
 from django.contrib.auth import views as auth_views
 
 from userena import views as userena_views
