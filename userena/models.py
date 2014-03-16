@@ -13,6 +13,7 @@ from userena.utils import get_gravatar, generate_sha1, get_protocol, \
     get_datetime_now, get_user_model, user_model_label
 import datetime
 from .mail import send_mail
+from django.utils.encoding import python_2_unicode_compatible
 
 
 PROFILE_PERMISSIONS = (
@@ -38,6 +39,7 @@ def upload_to_mugshot(instance, filename):
                                                'extension': extension}
 
 
+@python_2_unicode_compatible
 class UserenaSignup(models.Model):
     """
     Userena model which stores all the necessary information to have a full
@@ -79,7 +81,7 @@ class UserenaSignup(models.Model):
         verbose_name = _('userena registration')
         verbose_name_plural = _('userena registrations')
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % self.user.username
 
     def change_email(self, email):
@@ -234,6 +236,7 @@ class UserenaSignup(models.Model):
                   [self.user.email, ])
 
 
+@python_2_unicode_compatible
 class UserenaBaseProfile(models.Model):
     """ Base model needed for extra profile functionality """
     PRIVACY_CHOICES = (
@@ -280,7 +283,7 @@ class UserenaBaseProfile(models.Model):
         abstract = True
         permissions = PROFILE_PERMISSIONS
 
-    def __unicode__(self):
+    def __str__(self):
         return 'Profile of %(username)s' % {'username': self.user.username}
 
     def get_mugshot_url(self):
