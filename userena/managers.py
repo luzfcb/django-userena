@@ -98,8 +98,9 @@ class UserenaManager(UserManager):
         :return: The newly created :class:`UserenaSignup` instance.
 
         """
-        if isinstance(user.username, six.u):
-            user.username = user.username.encode('utf-8')
+        if six.PY2:
+            if isinstance(user.username, unicode):
+                user.username = user.username.encode('utf-8')
         salt, activation_key = generate_sha1(user.username)
 
         return self.create(user=user,

@@ -21,7 +21,10 @@ except ImportError:
     def truncate_words(s, num, end_text='...'):
         truncate = end_text and ' %s' % end_text or ''
         return Truncator(s).words(num, truncate=truncate)
-    truncate_words = allow_lazy(truncate_words, six.u)
+    if six.PY2:
+        truncate_words = allow_lazy(truncate_words, unicode)
+    if six.PY3:
+        truncate_words = allow_lazy(truncate_words, str)
 
 def get_gravatar(email, size=80, default='identicon'):
     """ Get's a Gravatar for a email address.
@@ -107,10 +110,16 @@ def generate_sha1(string, salt=None):
     :return: Tuple containing the salt and hash.
 
     """
-    if not isinstance(string, (str, six.u)):
-        string = str(string)
-    if isinstance(string, six.u):
-        string = string.encode("utf-8")
+    if six.PY2:
+        if not isinstance(string, (str, unicode)):
+            string = str(string)
+        if isinstance(string, unicode):
+            string = string.encode("utf-8")
+    if six.PY3:
+        if not isinstance(string, (str, str)): # TODO CHECK IF IS CORRECT
+            string = str(string)
+        if isinstance(string, str):
+            string = string.encode("utf-8")
     if not salt:
         salt = sha_constructor(str(random.random())).hexdigest()[:5]
     hash = sha_constructor(salt+string).hexdigest()
