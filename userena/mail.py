@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
+
+from six.moves import StringIO
 
 from django.utils.translation import ugettext as _
 from django.core.mail import EmailMultiAlternatives
