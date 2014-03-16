@@ -10,9 +10,10 @@ env:
   - DJANGO_VERSION=https://www.djangoproject.com/download/1.7a2/tarball/
 install:
   - pip install tox six django-coverage coverage south django-guardian html2text easy-thumbnails $DJANGO_VERSION
-script:
+before_script:
   - export PYTHONPATH=`pwd`:`pwd`/userena
   - export DJANGO_SETTINGS_MODULE="userena.runtests.settings"
+script:
   - python userena/runtests/runtests.py userena umessages
 notifications:
   email: false
