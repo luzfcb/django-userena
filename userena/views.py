@@ -7,7 +7,6 @@ from django.contrib.auth.views import logout as Signout
 from django.views.generic import TemplateView
 from django.template.context import RequestContext
 from django.views.generic.list import ListView
-from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.utils.translation import ugettext as _
