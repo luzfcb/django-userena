@@ -23,9 +23,10 @@ setup(name='django-userena',
       packages = find_packages(exclude=['demo', 'demo.*']),
       include_package_data=True,
       install_requires = [
-        'easy_thumbnails',
+        'easy-thumbnails',
         'django-guardian>=1.1.0.beta',
         'html2text',
+        'six',
         ### Required to build documentation
         # 'sphinx',
         # 'south',
