@@ -5,6 +5,7 @@ from django.contrib.auth.models import UserManager, Permission, AnonymousUser
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.conf import settings
+from django.utils import six
 
 from userena import settings as userena_settings
 from userena.utils import generate_sha1, get_profile_model, get_datetime_now, \
@@ -97,7 +98,7 @@ class UserenaManager(UserManager):
         :return: The newly created :class:`UserenaSignup` instance.
 
         """
-        if isinstance(user.username, unicode):
+        if isinstance(user.username, six.text_type):
             user.username = user.username.encode('utf-8')
         salt, activation_key = generate_sha1(user.username)
 

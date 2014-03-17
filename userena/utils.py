@@ -8,6 +8,7 @@ except ImportError:
     from django.utils.hashcompat import sha_constructor, md5_constructor
 
 from userena import settings as userena_settings
+from django.utils import six
 
 import urllib, random, datetime
 
@@ -20,7 +21,7 @@ except ImportError:
     def truncate_words(s, num, end_text='...'):
         truncate = end_text and ' %s' % end_text or ''
         return Truncator(s).words(num, truncate=truncate)
-    truncate_words = allow_lazy(truncate_words, unicode)
+    truncate_words = allow_lazy(truncate_words, six.text_type)
 
 def get_gravatar(email, size=80, default='identicon'):
     """ Get's a Gravatar for a email address.
@@ -57,6 +58,12 @@ def get_gravatar(email, size=80, default='identicon'):
     if userena_settings.USERENA_MUGSHOT_GRAVATAR_SECURE:
         base_url = 'https://secure.gravatar.com/avatar/'
     else: base_url = '//www.gravatar.com/avatar/'
+
+    # TODO:
+    # http://stackoverflow.com/questions/13265439/python-3-3-unicode-objects-must-be-encoded-before-hashing
+    # fix TypeError: Unicode-objects must be encoded before hashing error
+    # fix TypeError: Can't convert 'bytes' object to str implicitly error
+
 
     gravatar_url = '%(base_url)s%(gravatar_id)s?' % \
             {'base_url': base_url,
@@ -106,10 +113,15 @@ def generate_sha1(string, salt=None):
     :return: Tuple containing the salt and hash.
 
     """
-    if not isinstance(string, (str, unicode)):
+    if not isinstance(string, (str, six.text_type)):
         string = str(string)
-    if isinstance(string, unicode):
+    if isinstance(string, six.text_type):
         string = string.encode("utf-8")
+
+    # TODO:
+    # http://stackoverflow.com/questions/13265439/python-3-3-unicode-objects-must-be-encoded-before-hashing
+    # fix TypeError: Unicode-objects must be encoded before hashing error
+    # fix TypeError: Can't convert 'bytes' object to str implicitly error
     if not salt:
         salt = sha_constructor(str(random.random())).hexdigest()[:5]
     hash = sha_constructor(salt+string).hexdigest()

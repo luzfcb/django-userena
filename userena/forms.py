@@ -109,6 +109,10 @@ class SignupFormOnlyEmail(SignupForm):
     def save(self):
         """ Generate a random username before falling back to parent signup form """
         while True:
+            # TODO:
+            # http://stackoverflow.com/questions/13265439/python-3-3-unicode-objects-must-be-encoded-before-hashing
+            # fix TypeError: Unicode-objects must be encoded before hashing error
+            # fix TypeError: Can't convert 'bytes' object to str implicitly error
             username = sha_constructor(str(random.random())).hexdigest()[:5]
             try:
                 get_user_model().objects.get(username__iexact=username)
